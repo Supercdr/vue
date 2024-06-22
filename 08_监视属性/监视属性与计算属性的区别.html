@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>监视属性与计算属性的区别</title>
+  <script src='../js/vue.js'></script>
+</head>
+<body>
+  <div id='root'>
+    <h1>监视属性与计算属性的区别</h1>
+    <hr>
+    姓：<input type="text" v-model="firstname"><br><br>
+    名：<input type="text" v-model="lastname"><br><br>
+    全名：<span>{{fullname}}</span>
+  </div>
+</body>
+<script>
+  new Vue({
+    el:'#root', 
+    data:{
+      firstname:'张',
+      lastname:'三',
+      fullname:'张-三'
+    },
+    // 
+    // computed:{
+    //   fullname(){
+    //     console.log('get被调用了')
+    //     return this.firstname+"-"+this.lastname
+    //   }
+    // },
+    //使用监听属性watch实现
+    watch:{
+      firstname(val){
+        this.fullname=val+'-'+this.lastname
+      },
+      lastname(val){
+        this.fullname=this.firstname+'-'+val
+      }
+    }
+    //总结：计算属性computed与监听属性watch的区别：
+    //1.computed能完成的功能，watch都能实现
+    //2.watch能完成的功能，computed不一定能完成，例如watch可以进行异步操作，而computed不行
+  })
+</script>
+</html>

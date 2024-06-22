@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>键盘事件</title>
+  <script src='../js/vue.js'></script>
+</head>
+<style>
+  li {
+    margin-top: 10px;
+  }
+</style>
+
+<body>
+  <div id='root'>
+    <h1>键盘事件</h1>
+    <ul>
+      <h3>按键别名</h3>
+      <li>回车 enter</li>
+      <li>删除 delete</li>
+      <li>退出 esc</li>
+      <li>空格 space</li>
+      <li>换行 tab（特殊，必须配合keydown使用）</li>
+      <li>上 up</li>
+      <li>下 down</li>
+      <li>左 left</li>
+      <li>右 right</li>
+    </ul>
+    <!-- keyup 用户按下键再抬起时被触发 -->
+    <!-- keydown 用户按下键时立刻被触发 -->
+    <!-- 使用ctrl键和keyup事件时必须配合其他键一起使用，如需设置特定的按键，可使用@keyup.ctrl.y设置只能使用Ctrl+Y -->
+    输入内容按下回车键提示<input type="text" placeholder="输入内容" @keyup.enter="msg">
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#root',
+    methods: {
+      msg(e) {
+        alert("你输入的是：" + e.target.value)
+        //输出当前按键的名字
+        //console.log(e.key)
+      }
+    }
+  })
+</script>
+
+</html>

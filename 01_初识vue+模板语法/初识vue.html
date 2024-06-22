@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>初识vue</title>
+  <script src="../js/vue.js"></script>
+</head>
+
+<body>
+  
+  <div id="demo">
+    <!-- 插值符{{}}，内容为js的表达式或代码  适用于标签体-->
+    <h1>hello {{name.toUpperCase()}},{{address}},{{1+1}}</h1>
+    <!-- 指令语法 v-bind: （可简写为 ：） 将href属性的内容url作为传递的js表达式-->
+    <a v-bind:href="url" target="_blank">百度</a>
+
+  </div>
+
+  <script type="text/javascript">
+    Vue.config.productionTip=false //阻止Vue在启动时生成生产提示
+    //创建Vue实例
+    new Vue({
+      el:'#demo', //用于存放Vue实例的容器名 实例与容器一一对应
+
+      data:{
+         name:'milchstra',
+         address:'河南',
+         url:'https://www.baidu.com'
+      }
+    })
+  </script>
+
+</body>
+
+</html>

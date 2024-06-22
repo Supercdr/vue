@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>el与data的两种写法</title>
+  <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+<body>
+  <div id="root">
+    <h1>el的两种写法</h1>
+    <hr>
+    <ul>
+      <h3>容器与Vue实例的绑定方法</h3>
+      <li>在实例里面使用el方法绑定
+        <p>例如
+        <pre>
+          new Vue({
+            el:'#root', 
+            data:{
+              name:'kaylee'
+            }
+          })</pre>
+        </p>
+      </li>
+      <li>继承vue的内部方法mount将Vue实例挂载到容器,这个方法更加灵活<br>
+        先创建一个vue实例，然后在后面使用 <b>x.$mount('#root')</b> 方法进行绑定
+        <p>例如：
+        <pre>
+          const x=new Vue({
+            data:{
+              name:'kaylee'
+            }
+          })
+          console.log(x)
+          x.$mount('#root') //继承vue原型的mount方法将vue实例x挂载在id为root的容器上</pre>
+        </p>
+      </li>
+    </ul>
+    <h2>你好，{{name}}</h2>
+
+    <h1>data的两种写法</h1>
+    <hr>
+    <ul>
+      <h3>Vue实例中data的两种写法（后面必须使用函数）</h3>
+      <li>创建对象
+        <p>例如：
+        <pre>
+          data:{
+            name:'kaylee'
+          }
+        </pre>
+        </p>
+      </li>
+      <li>函数（不能使用箭头函数，否则函数中的this对象是window而不是Vue实例）
+        <p>例如：
+        <pre>
+          data:function(){
+            return{   //返回一个对象
+              name:'kaylee'
+            }
+          }
+        </pre>
+        </p>
+      </li>
+    </ul>
+    <h2>你好，{{name}}</h2>
+  </div>
+</body>
+
+<script type="text/javascript">
+  Vue.config.productionTip = false
+  const x = new Vue({
+    data() {
+      return {
+        name: 'kaylee'
+      }
+    }
+  })
+  console.log(x)
+  x.$mount('#root')
+</script>
+
+</html>

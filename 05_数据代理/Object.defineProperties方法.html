@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数据代理</title>
+  <script src="../js/vue.js"></script>
+</head>
+<body>
+  <div id="root">
+    <h1>hello,{{name}},{{$data.age}}</h1>
+  </div>
+</body>
+<script>
+  
+  let number=18
+  new Vue({
+    el:'#root', 
+    data(){
+      let person={
+        name:'kaylee'
+      };
+      Object.defineProperty(person,'age',{
+        value:number,
+        // enumberable:true,  //控制属性是否可以被枚举，默认值为false
+        // writable:true,  //控制属性是否可以被修改，默认为false
+        // configurable:true, //控制属性是否可以被删除，默认为false
+
+        // 当person的age属性被读取时，get函数（getter）被调用，返回值为age的值
+        // get(){
+        //   console.log('有人读取age属性了')
+        //   return value
+        // },
+        // //当person的age属性被修改时，set函数（setter）被调用，返回值为修改后的值
+        // set(value){
+        //   console.log('有人修改age值了')
+        //   number=value
+        //   return number
+        // }
+      })
+      return person
+    }
+  })
+  
+</script>
+</html>

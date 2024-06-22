@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>深度监视</title>
+  <script src='../js/vue.js'></script>
+</head>
+<body>
+  <div id='root'>
+    <h1>监视属性watch</h1>
+    <hr>
+    <h3>今天的天气很{{weather}}</h3>
+    <button @click="changeWeather">点击更换天气</button><br><br>
+    <hr>
+    <h3>a的值是{{numbers.a}}</h3>
+    <button @click="numbers.a++">点击增加a的值</button>
+  </div>
+</body>
+<script>
+  Vue.config.productionTip = false
+  const vm=new Vue({
+    el:'#root', 
+    data:{
+      isHot:true,
+      numbers:{
+        a:1
+      }
+    },
+    computed:{
+      weather(){
+        return this.isHot?'炎热':'寒冷'
+      }
+    },
+    methods:{
+      changeWeather(){
+        this.isHot=!this.isHot;
+      }
+    },
+    // 在Vue实例中添加监视属性
+    watch:{
+
+      isHot:{
+        //初始化调用一次handler，默认为false
+        immediate:true,
+        //当isHot发生改变时，回调函数handler就会被调用
+        //handler的newValue和oldValue是更改前后的值
+        handler(newValue,oldValue){
+          console.log('isHot由'+oldValue+'转变为'+newValue)
+        }
+      },
+
+      //监视方法的简写（在只有handler时才能简写）
+      // isHot(newValue,oldValue){
+      //   console.log('isHot由'+oldValue+'转变为'+newValue)
+      // },
+
+      //深度监视 vue自身可以检测对象内部值的改变，但vue提供的watch默认不可以，可以将deep属性设置为true来进行修改
+      //深度监视多层级结构中的某一个属性的变化
+      'numbers.a':{
+        handler(){
+          console.log('a的值改变了')
+
+          
+        }
+      },
+      //深度监视多层级结构中所有属性的变化
+      numbers:{
+        //deep设置watch对这个属性的深度监视
+        deep:true,
+        handler(){
+          console.log('numbers发生了改变')
+        }
+      }
+    }
+  })
+
+</script>
+</html>

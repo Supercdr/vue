@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>事件处理</title>
+  <script src="../js/vue.js"></script>
+</head>
+<!-- 事件的回调函数需要配置在methods对象中,最终会出现在vm对象上 -->
+<body>
+  <div id="root">
+    <h1>Welcome!{{name}}</h1>
+    <button v-on:click="showInfo1">点击提示信息1</button>
+    <!-- v-on可以简写为@ -->
+    <!-- 传参的时候需要使用 $event 对事件的event进行占位处理 -->
+    <button @click="showInfo2(6.21,$event)">点击提示信息2（传参）</button>
+  </div>
+</body>
+<script  type="text/javascript">
+  new Vue({
+    el:"#root",
+    data(){
+      return{
+        name:'kaylee'
+      }
+    },
+    methods:{
+      
+      showInfo1(event){
+        console.log(event)
+        alert('点击提示信息1')
+      },
+      showInfo2(number,event){
+        alert("参数："+number)
+        console.log("showInfo2",event)
+      }
+    }
+  })
+
+</script>
+
+</html>

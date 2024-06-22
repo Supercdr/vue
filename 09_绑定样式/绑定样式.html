@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>键盘事件</title>
+  <script src='../js/vue.js'></script>
+  <style>
+    .wel1{
+      width:300px;
+      height:100px;
+      background-color: rgb(132, 206, 181);
+    }
+    .wel2{
+      text-align:center;
+      align-content: center;
+      padding:0 15px;
+    }
+    .wel3{
+      border:3px solid rgb(23, 133, 105);
+    }
+    .wel4{
+      border-radius:30px;
+    }
+    .bt1{
+      padding:10px;
+    }
+    .bt2{
+      background-color: rgb(199, 160, 235);
+    }
+    .bt3{
+      border-radius: 20px;
+    }
+    .p1{
+      width:300px;
+      padding:10px;
+      border:2px solid black;
+      border-radius:30px;
+    }
+    .p2{
+      background-color:khaki;
+    }
+    .p3{
+      background-color:rgb(129, 202, 210);
+    }
+  </style>
+</head>
+<body>
+  <div id='root'>
+    <!-- 为标签添加动态class属性 -->
+    <!-- 字符串写法 适用于：样式的类名不确定，需要动态指定 -->
+    <p class="p1" :class="other" :style="pStyle" @click="pChange">使用字符串写法为标签绑定css样式</p>
+    <!-- 数组写法 适用于：要绑定的样式个数不确定，名字也不确定 -->
+    <h1 class="wel1" :class='classArr' @click="change">welcome，{{name}}!</h1>
+    <!-- 对象写法 适用于：要绑定的样式个数确定，名字也确定，但需要动态决定用不用 -->
+    <button class="bt1" :class="btArr" :style="{fontSize:style.fsize+'px', color:style.col}" @click="del">点击删除样式</button>
+    <!-- 绑定style样式 :style="{fontSize: fsize+'px'}" 其中fsize是动态值-->
+    <!-- 绑定style样式 :style="[a,b]" 其中a，b是样式对象 -->
+  </div>
+</body>
+<script>
+  new Vue({
+    el:'#root', 
+    data:{
+      name:'kaylee',
+      classArr:['wel2','wel3'],
+      btArr:{
+        bt2:true,
+        bt3:true,
+      },
+      other:'p2',
+
+      pStyle:[
+        {
+          fontSize:'18px',
+          // backgroungColor:'white'
+        },
+        {
+          color:'blue',
+        }
+      ],
+      style:{
+        fsize:20,
+        
+      }
+    },
+    methods:{
+      pChange(){
+        this.other='p3'
+      },
+      change(){
+        //push方法在数组的末尾添加一个或多个元素，并返回新的长度
+        console.log(this.classArr.push('wel4'))
+      },
+      del(){
+        // shift方法删除数组的第一个元素，并返回该元素的值
+        // this.classArr.shift();
+        //pop方法删除数组最后一个元素，并返回该元素的值
+        this.classArr.pop()
+      }
+    }
+  })
+</script>
+</html>

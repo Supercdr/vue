@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>事件修饰符</title>
+  <script src="../js/vue.js"></script>
+</head>
+<style>
+  .div1{
+    background-color: rgb(183, 224, 211);
+    padding:20px;
+  }
+  #ul1{
+    height:200px;
+    background-color: rgb(183, 224, 211);
+    overflow:auto;  /* 设置多出来的内容用滚动条显示 */
+  }
+  li{
+    height:100px;
+  }
+</style>
+<body>
+  <div id="root">
+    <h1>事件修饰符</h1>
+    <hr>
+    <h2>1. prevent 阻止事件默认行为</h2>
+    <a href="https://www.baidu.com" target="_blank" @click.prevent="prevent">点击跳转百度</a>
+
+    <h2>2. stop 阻止事件冒泡</h2>
+    <div class="div1" @click="showInfo1">
+      <a href="https://www.baidu.com" @click.stop.prevent="showInfo2">点击提示信息</a>
+    </div>
+
+    <h2>3. once 事件只触发一次</h2>
+    <div class="div1" @click.once="showInfo1">
+      <button @click.stop="showInfo2">点击提示信息</button>
+    </div>
+
+    <h2>4. capture 使用事件的捕获模式</h2>
+    <!-- 捕获模式是由外到内，事件冒泡是由内到外 -->
+    <div class="div1" @click.capture="showInfo1">
+      <button @click="showInfo2">点击提示信息</button>
+    </div>
+
+    <h2>5. self 只有event.target是当前操作的元素时才触发事件</h2>
+    <!-- 这里由于事件冒泡div1的showInfo事件应该被触发，但是由于event.target是触发这个事件的button，所以div的事件被不触发 -->
+    <div class="div1" @click.self="showInfo1">
+      <button @click="showInfo2">点击提示信息</button>
+    </div>
+
+    <h2>6. passive 事件的默认行为立即执行，无需等待事件回调执行完毕</h2>
+      <!-- 添加滚动事件 scroll是由滚动条触发的事件，wheel是由鼠标滚轮触发的事件-->
+      <ul id="ul1" @wheel.passive="count">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+      </ul>
+
+  </div>
+</body>
+
+<script>
+  new Vue({
+    el:'#root',
+    methods:{
+      prevent(e){
+        alert('百度')
+        //点击链接后先弹窗然后阻止页面跳转到百度页面 即阻止链接跳转的默认行为
+        // e.preventDefault()
+      },
+
+      showInfo1(e){
+        console.log(1)
+      },
+      showInfo2(e){
+        console.log(2)
+        //js中阻止事件冒泡的方法 事件冒泡指的是当一个元素的事件被触发时，这个元素的所有父元素中的所有同名事件由内到外被触发
+        // e.stopPropagation()
+      },
+      count(){
+        for(i=0;i<100;i++){
+          console.log("#")
+        }
+      }
+    }
+  })
+
+</script>
+</html>
