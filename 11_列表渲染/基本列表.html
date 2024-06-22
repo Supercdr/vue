@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>基本列表</title>
+  <script src='../js/vue.js'></script>
+</head>
+<body>
+  <div id='root'>
+    <ul>
+      <h3>人物列表</h3>
+      <!-- 使用v-for遍历persons数组，of或in都可使用 -->
+      <li v-for="(p,index) of persons" :key="index">{{p.name}} : {{p.age}} {{p.address}}</li>
+    </ul>
+    <ul>
+      <h3>汽车列表</h3>
+      <!-- 使用v-for遍历cars对象，of或in都可使用 -->
+      <li v-for="value,key,index in cars" :key="index">{{key}} :{{value}}</li>
+    </ul>
+  </div>
+</body>
+<script>
+  new Vue({
+    el:'#root', 
+    data:{
+      //数据为数组形式
+      persons:[
+        {
+          id:'001',
+          name:'张三',
+          age:18,
+          address:'河南'
+        },
+        {
+          id:'002',
+          name:'李四',
+          age:20,
+          address:'湖北'
+        },
+        {
+          id:'003',
+          name:'王五',
+          age:23,
+          address:'陕西'
+        },
+      ],
+      //数据为对象形式
+      cars:{
+        name:'奥迪A8',
+        price:'70万',
+        color:'黑色'
+      }
+
+    }
+  })
+</script>
+</html>

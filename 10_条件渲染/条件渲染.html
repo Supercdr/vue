@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>条件渲染</title>
+  <script src='../js/vue.js'></script>
+</head>
+<body>
+  <div id='root'>
+    <h1>条件渲染</h1>
+    <hr>
+    <h3>v-show 设置隐藏或显示 适用于切换频率较高的场景</h3>
+    <h4 v-show="show">v-show显示标签</h5>
+    <button @click="vshow">点击设置v-标签</button>
+
+    <h3>v-if 设置隐藏或显示（隐藏的DOM元素直接被移除） 适用于切换频率较低的场景</h3>
+    <p>备注：若有多个标签一起显示时，可以将这些标签放在template标签中，该标签不影响DOM结构,但必须配合v-if使用</p>
+    <template v-if="vif">
+      <h4>v-if显示标签</h5>
+      <h4>v-if显示标签</h5>
+      <h4>v-if显示标签</h5>
+      <h4>v-if显示标签</h5>
+    </template>
+    <!-- v-if可以配合v-else-if和v-else一起使用，但是结构不能被打断 -->
+    <!-- <h4 v-else-if="true">v-else-if显示标签</h4> -->
+    <!-- <h4 v-else>v-else显示标签</h4> -->
+    <button @click="ifshow">点击设置v-标签</button>
+    <p>备注：使用v-if时元素可能无法获取到，而使用v-show一定能获取到</p>
+  </div>
+</body>
+<script>
+  new Vue({
+    el:'#root', 
+    data:{
+      show:true,
+      vif:true
+    },
+    methods:{
+      vshow(){
+        this.show=!this.show
+      },
+      ifshow(){
+        this.vif=!this.vif
+      }
+    }
+  })
+</script>
+</html>
