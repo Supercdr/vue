@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>Vue监测数据的原理</title>
+  <script src='../js/vue.js'></script>
+</head>
+
+<body>
+  <div id='root'>
+    <h1>人员列表</h1>
+    <input type="text" placeholder="请输入搜索内容" v-model="keyWord">
+    <ul>
+      <li v-for="(p,index) in filPersons" :key="p.id">{{p.name}}-{{p.age}}</li>
+    </ul>
+  </div>
+</body>
+<script>
+  let data = {
+    name: 'kaylee',
+    age: 20
+  }
+  //创建一个监视的实例对象，用于监视data中属性的变化
+  const obs = new Observer(data);
+  function Observer(obj) {
+    const keys = Object.keys(obj);
+    keys.forEach((k) => {
+      // 将data中的属性添加到obs实例中，防止对源数据进行操作
+      Object.defineProperty(this, k, {
+        get() {
+          return obj[k];
+        },
+        set(val) {
+          obj[k] = val;
+        }
+      })
+    })
+  }
+</script>
+
+</html>

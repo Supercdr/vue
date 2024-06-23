@@ -9,14 +9,22 @@
 <body>
   <div id='root'>
     <ul>
-      <h3>人物列表</h3>
+      <h3>人物列表(遍历数组)</h3>
       <!-- 使用v-for遍历persons数组，of或in都可使用 -->
       <li v-for="(p,index) of persons" :key="index">{{p.name}} : {{p.age}} {{p.address}}</li>
     </ul>
     <ul>
-      <h3>汽车列表</h3>
-      <!-- 使用v-for遍历cars对象，of或in都可使用 -->
+      <h3>汽车列表(遍历对象）</h3>
+      <!-- 使用v-for遍历cars对象，of或in都可使用 （注意：遍历对象时第一个参数是value，第二个参数是key -->
       <li v-for="value,key,index in cars" :key="index">{{key}} :{{value}}</li>
+    </ul>
+    <ul>
+      <h3>遍历字符串</h3>
+      <li v-for="(value,index) of str" :key="index">{{index}}: {{value}}</li>
+    </ul>
+    <ul>
+      <h3>遍历指定次数</h3>
+      <li v-for="(value,index) of 6" :key="index">{{index}}: {{value}}</li>
     </ul>
   </div>
 </body>
@@ -50,8 +58,8 @@
         name:'奥迪A8',
         price:'70万',
         color:'黑色'
-      }
-
+      },
+      str:'hello',
     }
   })
 </script>

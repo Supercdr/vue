@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>key的原理</title>
+  <script src='../js/vue.js'></script>
+</head>
+<body>
+  <div id='root'>
+    <ul>
+      <h3>key的用法及原理</h3>
+      <li v-for="(p,index) of persons" :key="p.id">{{p.name}} : {{p.age}} {{p.address}} <input type="text"></li>
+      <br>
+      <button @click="add">点击添加</button><br>
+    </ul>
+    <ul>
+      <p>面试题：react,Vue中的key有什么作用？（key的内部原理）</p>
+      <li>虚拟DOM中key的作用
+        <p>key是虚拟DOM对象的标识，当数据发生变化时，Vue会根据新数据生成新的虚拟DOM，然后Vue进行新虚拟DOM与旧虚拟DOM的差异比较，比较规则如下：</p>
+      </li>
+      <li>比较规则
+        <p>1.旧虚拟DOM中找到了与新虚拟DOM相同的key
+          <p>&nbsp;&nbsp;&nbsp;若虚拟DOM中内容没变，则直接使用事前的真实DOM</p>
+          <p>&nbsp;&nbsp;&nbsp;若虚拟DOM中内容改变，则直接生成新的真实DOM，然后替换掉页面中之前的真实DOM</p>
+        </p>
+        <p>2.旧虚拟DOM中未找到与新虚拟DOM相同的key
+          <p>&nbsp;&nbsp;&nbsp;生成新的真实DOM，然后渲染到页面</p>
+        </p>
+      </li>
+      <li>使用index作为key可能引发的问题
+        <p>若对数据进行逆序添加、逆序操作等破坏数据顺序的操作，则会导致数据的index发生改变，即原本的key发生改变，会产生没必要的真实DOM更新，导致效率低。若数据结构中存在输入类的DOM，则会产生错误DOM更新，导致数据错位</p>
+      </li>
+      <li>开发中如何选择key
+        <p>1.最好使用每条数据的唯一标识作为key，比如id，手机号，身份证号，学号等唯一值</p>
+        <p>2.如果不存在对数据的逆序添加、逆序删除等破环数据顺序的操作，仅用于渲染列表作为展示，则可以使用index作为key</p>
+      </li>
+  </ul>
+  </div>
+</body>
+<script>
+  new Vue({
+    el:'#root', 
+    data:{
+      //数据为数组形式
+      persons:[
+        {
+          id:'001',
+          name:'张三',
+          age:18,
+          address:'河南'
+        },
+        {
+          id:'002',
+          name:'李四',
+          age:20,
+          address:'湖北'
+        },
+        {
+          id:'003',
+          name:'王五',
+          age:23,
+          address:'陕西'
+        },
+      ],
+    },
+    methods:{
+      add(){
+        this.persons.unshift({id:'004',name:'赵六',age:30,address:'杭州'})
+      }
+    }
+  })
+</script>
+</html>

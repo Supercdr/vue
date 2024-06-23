@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>使用列表过滤实现搜索框</title>
+  <script src='../js/vue.js'></script>
+</head>
+<body>
+  <div id='root'>
+    <!-- 使用v-model对keyWord进行双向数据绑定 -->
+    <input type="text" placeholder="请输入搜索内容" v-model="keyWord">
+    <ul>
+      <li v-for="(p,index) in filPersons" :key="p.id" >{{p.name}}</li>
+    </ul>
+  </div>
+</body>
+<script>
+  // 当compted和watch都能实现时优先使用computed
+  new Vue({
+    el:'#root', 
+    data:{
+      //设置keyWord获取搜索框里的内容
+      keyWord:'',
+      persons:[
+        {
+          id:'001',
+          name:'周冬雨',
+          age:18,
+          address:'河南'
+        },
+        {
+          id:'002',
+          name:'马冬梅',
+          age:20,
+          address:'湖北'
+        },
+        {
+          id:'003',
+          name:'周杰伦',
+          age:23,
+          address:'陕西'
+        },
+        {
+          id:'004',
+          name:'白鹿',
+          age:20,
+          address:'湖北'
+        },
+        {
+          id:'005',
+          name:'范丞丞',
+          age:23,
+          address:'陕西'
+        },
+      ],
+      //使用监视属性，设置一个数组存放更改后的数组，不能破坏原数组的数据
+      filPersons:[],
+    },
+    //使用计算属性实现搜索框
+    // computed:{
+    //   filPersons(){
+    //     //filter过滤器 返回符合筛选条件的所有元素组成的新数组
+    //     //这里的a参数是filter所遍历数组中的每一个元素
+    //     return this.persons.filter((a)=>{
+    //       //indexOf方法查找指定字符在字符串中的下标
+    //       return a.name.indexOf(this.keyWord)!==-1
+    //     })
+    //   }
+    // },
+    //使用watch监视属性实现搜索框
+    watch:{
+      keyWord:{
+        //需要设置初始未搜索时先执行一次搜索
+        immediate:true,
+        handler(val){
+          this.filPersons=this.persons.filter((a)=>{
+          return a.name.indexOf(val)!==-1
+        })
+        }
+      }
+    }
+  })
+</script>
+</html>

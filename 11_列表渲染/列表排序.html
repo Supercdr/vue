@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>使用列表过滤实现搜索框以及排序功能</title>
+  <script src='../js/vue.js'></script>
+</head>
+<body>
+  <div id='root'>
+    <h1>人员列表</h1>
+    <input type="text" placeholder="请输入搜索内容" v-model="keyWord">
+    <button @click="sortType=1">按照年龄升序</button>
+    <button @click="sortType=2">按照年龄降序</button>
+    <button @click="sortType=0">原顺序</button>
+    <ul>
+      <li v-for="(p,index) in filPersons" :key="p.id" >{{p.name}}-{{p.age}}</li>
+    </ul>
+  </div>
+</body>
+<script>
+  new Vue({
+    el:'#root', 
+    data:{
+      keyWord:'',
+      sortType:0,
+      persons:[
+        {
+          id:'001',
+          name:'周冬雨',
+          age:31,
+          address:'河南'
+        },
+        {
+          id:'002',
+          name:'马冬梅',
+          age:43,
+          address:'湖北'
+        },
+        {
+          id:'003',
+          name:'周杰伦',
+          age:54,
+          address:'陕西'
+        },
+        {
+          id:'004',
+          name:'白鹿',
+          age:28,
+          address:'湖北'
+        },
+        {
+          id:'005',
+          name:'范丞丞',
+          age:23,
+          address:'陕西'
+        },
+      ],
+    },
+    computed:{
+      filPersons(){
+        const arr =  this.persons.filter((a)=>{
+          return a.name.indexOf(this.keyWord)!==-1
+        })
+        //判断sortType的值是否为0，不为0则进行排序，0为false，1和2都为true
+        if(this.sortType){
+          arr.sort((a,b)=>{
+            //sort方法接收两个参数，类型必须为数值形式，这里接受的参数a和b是persons中的每个对象，需要使用age属性
+            return this.sortType===1 ? a.age-b.age : b.age-a.age
+          })
+        }
+        return arr
+      }
+    },
+  })
+</script>
+</html>
