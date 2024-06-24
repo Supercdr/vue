@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>总结Vue数据监测</title>
+  <script src='../js/vue.js'></script>
+</head>
+<!-- 总结Vue数据监测
+1.vue会监视data中所有层次的数据
+2.如何检测对象中的数据
+   通过setter实现监视，且要在new vue时就传入要检测的数据
+   （1）对象中后追加的属性，Vue默认不做响应式处理
+   （2）如需给后添加的属性做响应式，需要使用如下API：
+           Vue.set(target, propertyName/index.value)或
+           vm.$set(target, propertyName/index.value)
+3.如何监测数组中的数据？
+    通过包裹数组更新元素的方法实现，其本质是：
+       （1）调用原生对应的方法对数组进行更新
+       （2）重新解析模板，进而更新页面
+4.在Vue中修改数组中的某个元素一定要用如下方法：
+    1.API：push() pop() shift() unshift() splice() sort() reverse()
+    2.Vue.set()或vm.$set()
+        
+-->
+
+<body>
+  <div id='root'>
+    <h1>学生信息</h1>
+    <button @click="person.age++">年龄+1岁</button><br><br>
+    <button @click="addSex">添加性别属性，默认值：男</button><br><br>
+    <button @click="updateSex">修改性别</button><br><br>
+    <button @click="addFriend">在列表首位添加一个朋友</button><br><br>
+    <button @click="updateFri">修改朋友的名字</button><br><br>
+    <button @click="addHobby">添加一个爱好</button><br><br>
+    <button @click="updateHobby">修改第一个爱好为：绘画</button>
+    <ul>
+      <li>姓名：{{person.name}}</li>
+      <li>年龄：{{person.age}}</li>
+      <!-- 根据是否含有sex属性显示sex信息 -->
+      <li v-if="person.sex">性别：{{person.sex}}</li>
+      <li>
+        <h4>爱好</h4>
+        <ul>
+          <li v-for="h,index in person.hobby" :key="index">{{h}}</li>
+        </ul>
+      </li>
+      <li>
+        <h4>朋友</h4>
+        <ul>
+          <li v-for="f in person.friends">{{f.name}}-{{f.age}}</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</body>
+<script>
+  const vm = new Vue({
+    el: '#root',
+    data: {
+      person: {
+        name: 'kaylee',
+        age: 20,
+        hobby: ['追剧', '阅读', '锻炼'],
+        friends: [
+          {
+            name: 'tina',
+            age: 34
+          },
+          {
+            name: 'jone',
+            age: 23
+          }
+        ]
+      }
+    },
+    methods: {
+      addSex() {
+        Vue.set(this.person, 'sex', '男');
+        //第二种写法 使用$符
+        // this.$set(this.person,'sex','男')
+      },
+      updateSex() {
+        //设置任务性别为女
+        this.$set(this.person, 'sex', '女')
+      },
+      addFriend() {
+        //在朋友数组里添加一个朋友
+        this.person.friends.unshift({ name: '余虹', age: 21 })
+      },
+      updateFri() {
+        Vue.set(this.person.friends[1], 'name', '缇娜')
+        // this.person.friends[1].name='缇娜'
+      },
+      addHobby() {
+        this.person.hobby.push('学习')
+      },
+      updateHobby() {
+        // this.person.hobby.splice(0,1,'绘画')
+        Vue.set(this.person.hobby, 0, '绘画')
+      }
+    }
+
+  })
+</script>
+
+</html>

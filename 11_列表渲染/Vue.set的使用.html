@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>Vue监测数据的原理</title>
+  <script src='../js/vue.js'></script>
+</head>
+
+<body>
+  <div id='root'>
+    <h1>人员列表</h1>
+    <ul>
+      <li>姓名：{{person.name}}</li>
+      <li>年龄：{{person.age}}</li>
+      <!-- 根据是否含有sex属性显示sex信息 -->
+      <li v-if="person.sex">性别：{{person.sex}}</li>
+    <button @click="add">点击添加地址</button>
+    </ul>
+  </div>
+</body>
+<script>
+   const vm=new Vue({
+    el:'#root',
+    data:{
+      person:{
+        name:'kaylee',
+        age:20
+      }
+    },
+    methods:{
+      add(){
+        //注意：不允许在vue的实例中或者直接给data对象添加属性，只能给data中的某个对象添加属性
+        //在使用Vue.set方法为person数据添加sex属性，这个方法可以让vue自动添加该属性的getter和setter
+        Vue.set(this.person,'sex','男');
+        //第二种写法 使用$符
+        // this.$set(this.person,'sex','女')
+      }
+    }
+    
+  })
+</script>
+
+</html>
