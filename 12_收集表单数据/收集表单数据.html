@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>键盘事件</title>
+  <script src='../js/vue.js'></script>
+</head>
+
+<body>
+  <!-- 收集表单数据
+    若：<input type="text"/>，则value-model收集的是value值，就是用户输入的内容
+    若：<input type="radio"/>，则v-model收集的就是value值，但是需要给每个标签配置value值
+    若：<input type="checkbox"/>
+        1.没有配置input的value属性，那么收集的就是checked（勾选or未勾选的布尔值）
+        2.配置input的value属性：
+          （1）v-model的初始值是非数组，那么收集的就是checked（勾选or未勾选的布尔值）
+          （2）v-model的初始值是数组，那么收集的就是选择的value组成的数组
+    备注：v-model的三个修饰符：
+          lazy：失去焦点再收集数据
+          number：输入字符串转为有效的数字
+          trim：收入首位空格过滤
+  -->
+  <div id='root'>
+    <form @submit.prevent="demo">
+      <!-- 设置输入框的类型为number，则无法输入非数字类型 -->
+      <label for="account">账号：</label>
+      <!-- number设置输入数据必须为数字，trim用于去除输入内容前后的空格 -->
+      <input id="account" type="number" v-model.number="userInfo.account"><br><br>
+      密码：<input type="password" v-model="userInfo.pwd"><br><br>
+      <!-- 单选框需要设置相同的name值，表示其为同一组数据 -->
+      性别：<input type="radio" name="sex" v-model="userInfo.sex" value="male">男
+      <input type="radio" name="sex" v-model="userInfo.sex" value="female">女 <br><br>
+      爱好：<input type="checkbox" v-model="userInfo.hobby" value="study">学习
+      <input type="checkbox" v-model="userInfo.hobby" value="draw">绘画
+      <input type="checkbox" v-model="userInfo.hobby" value="read">读书 <br><br>
+      所属校区：<select v-model="userInfo.xiaoqu">
+        <option>请选择校区</option>
+        <option>下沙</option>
+        <option>桐乡</option>
+      </select><br><br>
+      <!-- lazy设置输入框在失去焦点的时候收集数据，而不是实时收集 -->
+      其他信息：<textarea v-model.lazy="userInfo.other"></textarea><br><br>
+      <input type="checkbox" v-model="userInfo.agree">阅读并接受<a href="https://www.baidu.com">《用户协议》</a><br><br>
+      <button>提交</button>
+    </form>
+  </div>
+</body>
+<script>
+  const vm = new Vue({
+    el: '#root',
+    data: {
+      userInfo: {
+        account: '',
+        pwd: '',
+        sex: '',
+        hobby: [],
+        xiaoqu: '',
+        other: '',
+        agree: ''
+      }
+    },
+    methods: {
+      demo() {
+        console.log(JSON.stringify(this.userInfo))
+      }
+    }
+  })
+</script>
+
+</html>
