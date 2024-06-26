@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>过滤器</title>
+  <script src='../js/vue.js'></script>
+  <!-- 引入dayjs -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/dayjs/1.11.11/dayjs.min.js"></script>
+</head>
+<body>
+  <h1>过滤器filters</h1>
+  <div id='root'>
+    当前时间：<input type="text" v-model="dayTime"><br>
+    <!-- 过滤器filTime将time进行处理，最后括号内的值为过滤器处理后的值 -->
+    当前时间（过滤器）：{{time | filTime | sliceTime}}
+  </div>
+  <ul>
+    <h3>总结</h3>
+    <li>过滤器定义：对要显示的数据进行特定格式化后再显示（适用于一些简单逻辑的处理）</li>
+    <li>语法：<br>
+      1.注册使用过滤器：全局过滤器：Vue.filter(name,callback)  局部过滤器：new Vue{filters:{}}<br>
+      2.使用过滤器：{{xxx|过滤器名}}或v-bind:属性=“xxx|过滤器名”
+    </li>
+    <li>
+      备注：<br>
+      1.过滤器也可以接收额外参数、多个过滤器也可以串联<br>
+      2.并没有改变原本的数据，是产生新的对应的数据
+    </li>
+  </ul>
+</body>
+<script>
+  //全局过滤器
+  Vue.filter('sliceTime',function(value){
+    return value.slice(0,10)
+  })
+  new Vue({
+    el:'#root', 
+    data:{
+      time:'20214137603'
+    },
+    //计算属性实现 将时间戳改为时间格式
+    computed:{
+      dayTime(){
+        return dayjs(this.time).format('YYYY年MM月DD日 HH:MM:MM')
+      }
+    },
+    //局部过滤器
+    filters:{
+      filTime(value){
+        return dayjs(this.time).format('YYYY-MM-DD hh:mm:ss')
+      },
+      // sliceTime(value){
+      //   return value.slice(0,10)
+      // }
+
+    }
+
+  })
+</script>
+</html>

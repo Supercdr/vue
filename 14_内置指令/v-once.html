@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>v-once</title>
+  <script src='../js/vue.js'></script>
+</head>
+<body>
+  <!-- 
+    v-once指令：
+      1.v-once所在节点在初次动态渲染后就会变为静态内容，不会再改变
+      2.以后的数据改变不会引起v-once所在结构的更新，可以用于优化性能
+   -->
+  <div id='root'>
+    <h1 v-once>初始化的n值是：{{n}}</h1>
+    <h1>当前的n值是：{{n}}</h1>
+    <button  @click="n++">点击增加</button>
+  </div>
+</body>
+<script>
+  new Vue({
+    el:'#root', 
+    data:{
+      n:'1'
+    }
+  })
+</script>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>键盘事件</title>
+  <script src='../js/vue.js'></script>
+</head>
+<body>
+  <!-- 
+    v-pre指令
+      1.跳过所在节点的编译过程
+      2.若没有使用指令语法，没有使用插值语法的节点，可以加快编译
+  -->
+  <div id='root'>
+    <!-- 在未使用v-pre的语句中，直接跳过编译可以加快效率 -->
+    <h1 v-pre>学习Vue中...</h1>
+    <h1>学习{{name}}中...</h1>
+    <!-- 在使用了插值语法的语句中使用v-pre会导致浏览器跳过编译，不会去寻找参数name的值 -->
+    <h1 v-pre>学习{{name}}中...</h1>
+  </div>
+</body>
+<script>
+  new Vue({
+    el:'#root', 
+    data:{
+      name:'Vue'
+    }
+  })
+</script>
+</html>

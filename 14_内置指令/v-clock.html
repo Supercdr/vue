@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>v-clock</title>
+  <script src='../js/vue.js'></script>
+  <style>
+    /* 选择所有标签中含有v-cloak属性的元素 */
+    [v-clock] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 
+    v-cloak指令
+    1.本质是一个特殊属性，Vue实例创建完毕并接管容器后，会删掉v-cloak属性
+    2.使用css中display隐藏可以解决网速慢时页面展示出{{xx}}的问题
+  -->
+  <div id='root'>
+    <h1 v-cloak>{{name}}</h1>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#root',
+    data: {
+      name: 'kaylee'
+    }
+  })
+</script>
+
+</html>
