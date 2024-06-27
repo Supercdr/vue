@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>组件的嵌套</title>
+  <script src='../js/vue.js'></script>
+</head>
+<body>
+  <div id='root'>
+
+  </div>
+</body>
+<script>
+  //定义student组件(局部) 子组件必须在注册之前被定义
+  const student=Vue.extend({
+    template:`
+    <div>
+      <h1>学生名字:{{stuName}}</h1>
+      <h1>学生年龄:{{age}}</h1>
+      <button @click="age++">点击增加年龄</button>
+    </div>
+    `,
+    data(){
+      return{
+        stuName:'Milchstra',
+        age:20
+      }
+    }
+  })
+  
+  //定义school组件(局部)
+  const school=Vue.extend({
+    template:`
+    <div>
+      <h1>学校名称:{{schoolName}}</h1>
+      <h1>学校地址:{{address}}</h1>
+      <button @click="jump">点击弹窗</button>
+      <student></student>
+    </div>
+    `,
+    data(){
+      return{
+        schoolName:'浙江传媒学院',
+        address:'杭州',
+      }
+    },
+    methods:{
+      jump(){
+        alert(1)
+      }
+    },
+    components:{
+      student
+    }
+  })
+  
+  //定义hello组件(局部)
+  const hello=Vue.extend({
+    template:`<h1>{{msg}}</h1>`,
+    data(){
+      return{
+        msg:'你好呀'
+      }
+    }
+  })
+  
+  //定义app组件 管理所有组件
+  const app=Vue.extend({
+    template:`
+    <div>
+      <hello></hello>
+      <school></school>
+    </div>
+    `,
+    components:{
+      school,
+      hello
+    }
+  })
+  
+  new Vue({
+    el:'#root', 
+    template:'<app></app>',
+    components:{app}
+  })
+</script>
+</html>

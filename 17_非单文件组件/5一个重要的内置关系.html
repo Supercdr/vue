@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>组件的一个重要的内置关系</title>
+  <script src='../js/vue.js'></script>
+</head>
+<!-- 
+  1.一个重要的内置关系:VueComponent.prototype.__proto__ === Vue.prototype
+  2.可以让组件实例对象vc可以访问到Vue原型上的属性,方法.
+ -->
+<body>
+  <div id='root'>
+    <h1>{{msg}}</h1>
+    <button @click="showVm">点击输出vm</button>
+    <school></school>
+  </div>
+</body>
+<script>
+  const school=Vue.extend({
+    template:`
+    <div>
+      <h1>学校名称:{{schoolName}}</h1>
+      <h1>学校地址:{{address}}</h1>
+      <button @click="jump">点击输出vc</button>
+    </div>
+    `,
+    data(){
+      return{
+        schoolName:'浙江传媒学院',
+        address:'杭州',
+      }
+    },
+    methods:{
+      jump(){
+        console.log(this)
+      }
+    }
+  })
+  new Vue({
+    el:'#root', 
+    data:{
+      msg:'你好啊'
+    },
+    components:{
+      school
+    },
+    methods:{
+      showVm(){
+        console.log(this)
+      }
+    }
+  })
+</script>
+</html>

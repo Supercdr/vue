@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>回顾一个DOM操作</title>
+  <script src='../js/vue.js'></script>
+</head>
+<body>
+  <div id='root'>
+    <h1 >自定义指令</h1>
+    <h2>当前的n值是：<span v-text="n"></span></h2>
+    <!-- 自定义指令big-number -->
+    <h2>放大10倍后的n值是：<span v-big-number="n"></span></h2>
+    <button @click="n++">点击n++</button>
+    <hr>
+    <input type="text" v-fbind="n">
+  </div>
+</body>
+<!-- 总结 
+  配置对象中常用的3个回调:
+    (1).bind:指令与元素成功绑定时调用
+    (2).inserted:指令与所在元素被插入页面时调用
+    (3).update:指令与所在模板结构被重新解析时调用
+  备注:
+    1.指令定义时前面不需要加v-,但使用时要加v-.
+    2.指令名如果是多个单词,要使用kebab-case命名方式,不要用camelCase命名.
+-->
+<script>
+  //全局 自定义指令
+  Vue.directive('fbind',{
+        bind(element,binding){
+          element.value=binding.value
+        },
+        inserted(element,binding){
+          element.focus()
+        },
+        update(element,binding){
+          element.value=binding.value
+        }
+      })
+  new Vue({
+    el:'#root', 
+    data:{
+      n:1
+    },
+    directives:{
+      //自定义指令的名称含有多个单词时，建议使用-分隔，不建议用驼峰式命名，要注意定义时指令名称要加引号
+      'big-number'(element,binding){
+        element.innerText=binding.value*10
+      },
+      //局部 自定义指令
+      // fbind:{
+      //   bind(element,binding){
+      //     element.value=binding.value
+      //   },
+      //   inserted(element,binding){
+      //     element.focus()
+      //   },
+      //   update(element,binding){
+      //     element.value=binding.value
+      //   }
+      // }
+    }
+  })
+</script>
+</html>

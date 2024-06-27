@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>自定义指令</title>
+  <script src='../js/vue.js'></script>
+</head>
+<body>
+  <div id='root'>
+    <h1 >自定义指令</h1>
+    <h2>当前的n值是：<span v-text="n"></span></h2>
+    <h2>放大10倍后的n值是：<span v-big="n"></span></h2>
+    <button @click="n++">点击n++</button>
+    <hr>
+    <input type="text" v-fbind="n">
+  </div>
+</body>
+<script>
+  new Vue({
+    el:'#root', 
+    data:{
+      n:1
+    },
+    directives:{
+      //两种写法，一种是函数形式，写法简单，但是不能处理一些细节上的问题；第二种写法是对象形式，可以处理一些细节上的问题
+      //自定义指令函数接收两个参数，第一个参数是与指令进行绑定的DOM元素，第二个参数是Vue创造的绑定对象，里面包含相关的绑定数据
+      //指令函数的调用：1.指令与元素成功绑定时（在页面加载之前）2.指令所在的模板被重新解析时
+      big(element,binding){
+        // console.log(element,binding)
+        element.innerText=binding.value*10
+      },
+      //自定义指令的对象形式
+      fbind:{
+        //指令与元素成功绑定时被调用（一上来）
+        bind(element,binding){
+          element.value=binding.value
+        },
+        //指令所绑定的DOM元素被插入在页面时被调用
+        inserted(element,binding){
+          element.focus()
+        },
+        //指令所在的模板被重新解析时被调用
+        update(element,binding){
+          element.value=binding.value
+        }
+      }
+    }
+  })
+</script>
+</html>
