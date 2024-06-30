@@ -19,17 +19,14 @@
 export default {
   name:'todoItem',
   //接收参数
-  props:['todo','todoCheck','deleteTodo'],
+  props:['todo'],
   methods:{
     changeCheck(id){
-      //获取id
-      // console.log(id)
-      this.todoCheck(id)
+      this.$bus.$emit('todoCheck',id)
     },
     btnDelete(id){
       if(confirm('确定删除这个任务吗？')){
-        //将id通过deleteTodo函数传递给App组件
-        this.deleteTodo(id)
+        this.$bus.$emit('deleteTodo',id)
       }
     }
   }

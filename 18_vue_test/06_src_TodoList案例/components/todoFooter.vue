@@ -12,7 +12,7 @@
 <script scoped>
 export default {
   name:'todoFooter',
-  props:['todoList','checkAllTodo','clearDoneTodo'],
+  props:['todoList'],
   computed:{
     total(){
       return this.todoList.length
@@ -27,14 +27,14 @@ export default {
       },
       set(val){
         //根据全选框是否被选中的true或false值传递给App
-        this.checkAllTodo(val)
+        this.$emit('checkAllTodo',val)
       }
     }
   },
   methods:{
     clearDone(){
       if(confirm('确认删除已完成吗？')){
-        this.clearDoneTodo()
+        this.$emit('clearDoneTodo')
       }
     }
   }

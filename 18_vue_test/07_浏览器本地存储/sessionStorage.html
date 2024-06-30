@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sessionStorage</title>
+</head>
+<!-- sessionStorage与localStorage的方法都一样，两者的区别就是：
+        1.localStorage中存储的数据需要手动清除才会消失，例如在浏览器的设置里面清除缓存，或者设置按钮特地删除数据
+        2.sessionStorage中存储的数据在关闭网页时就会被清除。
+-->
+<body>
+  <h1>sessionStorage</h1>
+  <button onclick="addData()">点击添加一个数据</button>
+  <button onclick="getData()">点击查看一个数据</button>
+  <button onclick="removeData()">点击删除一个数据</button>
+  <button onclick="clearData()">点击清空数据</button>
+</body>
+<script>
+  function addData(){
+    // sessionStorage添加数据的方法——setItem('key','value')
+    sessionStorage.setItem('name','Kaylee')
+  }
+  function getData(){
+    //从获取sessionStorage中key为name的数据
+    const a=sessionStorage.getItem('name')
+    console.log(a)
+  }
+  function removeData(){
+    //删除sessionStorage中key为name的数据
+    sessionStorage.removeItem('name')
+  }
+  function clearData(){
+    //清空sessionStorage中所有数据
+    sessionStorage.clear()
+  }
+</script>
+</html>

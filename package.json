@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "nanoid": "^5.0.7"
+    "nanoid": "^5.0.7",
+    "pubsub-js": "^1.9.4"
   }
 }

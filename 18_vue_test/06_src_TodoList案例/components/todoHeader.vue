@@ -25,13 +25,12 @@ export default {
       const todoObj={id:nanoid(),name:e.target.value,done:false}
 
       //将todoObj对象通过addTodo方法传递给App组件
-      this.addTodo(todoObj)
+      this.$emit('addTodo',todoObj) 
 
       //清空输入框
       e.target.value=''
     }
   },
-  props:['addTodo']
 }
 </script>
 

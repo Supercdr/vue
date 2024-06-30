@@ -5,8 +5,6 @@
       <todoItem v-for="todoObj in todoList" 
       :key="todoObj.id" 
       :todo="todoObj" 
-      :todoCheck="todoCheck"
-      :deleteTodo="deleteTodo"
       />
     </ul>
   </div>
@@ -18,7 +16,7 @@ export default {
   name:'todoList',
   components:{todoItem},
   // 接收从App组件传递过来的todoList
-  props:['todoList','todoCheck','deleteTodo'],
+  props:['todoList'],
   computed:{
     unfinished(){
       //使用reduce方法计算todoList数组里未完成的总数
