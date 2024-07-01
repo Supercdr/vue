@@ -41,6 +41,14 @@
             todo.done=!todo.done
         })
       },
+      //更新todoName
+      updateTodoName(id,name){
+        // 通过接收从todoItem传递的的id值进行匹配，再修改对应id的done值
+        this.todoList.forEach(todo=>{
+          if(todo.id===id)
+            todo.name=name
+        })
+      },
       //删除todo
       deleteTodo(id){
         //使用filter方法遍历todoList数组，返回todo.id与获取的id不同的所有对象的新数组
@@ -60,9 +68,10 @@
     mounted(){
       this.$bus.$on('todoCheck',this.todoCheck)
       this.$bus.$on('deleteTodo',this.deleteTodo)
+      this.$bus.$on('updateTodoName',this.updateTodoName)
     },
     beforeDestroy(){
-      this.$bus.$off(['todoCheck','deleteTodo'])
+      this.$bus.$off(['todoCheck','deleteTodo','updateTodoName'])
     },
     // 使用监视属性,若todoList数据变化,则将新的todoList数据存储到localStorage中
     watch:{

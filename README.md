@@ -18,16 +18,15 @@
  >       1.只接收：props:[name]
 
  >       2.接受的同时限制类型：
-
+```javascript
       props：{
             name:String,
             age:Number
       }
-
+```
 
 >       3.限制类型+限制必要性+指定默认值
-
-
+```javascript
         props:{
             name:{
                   type:String,
@@ -38,14 +37,14 @@
                   default:99  //默认值
             }
         }
-
+```
 >备注：props是只读的，Vue底层会监测props的改变，如果进行了修改，就会发出警告。若业务需求确实需要更改，那么请复制一份props的内容到data中，然后去修改data中的数据。
    
 ## mixin（混入）
 ##### 功能：可以把多个组件共用的配置提取成一个混入对象
 使用方式：
   第一步：定义混合 例如：
-  ```
+  ```javascript
 
   export const a={
       data(){....},
@@ -61,7 +60,7 @@
 ##### 功能：用于增强Vue
 >本质：包含install方法的一个对象，install的第一个参数是Vue，第二个以后的参数是插件使用者传递的数据。
 定义插件：
-```
+```javascript
 对象.install = function(Vue,options){
 
       //1.添加全局过滤器
@@ -134,7 +133,7 @@
 (1)在父组件中:`<Demo @myThing="test"/>` 或 `<Demo v-on:myThing="test"/>`
 (2)在父组件中:
 
-```
+```javascript
 <!-- 给Demo组件添加ref属性 -->
 <Demo ref="demo"/>
 ...
@@ -162,7 +161,7 @@ mounted(){
 > 1.一种组件间通信的方式,适用于任意组件间通信.
 
 >2.安装全局事件总线:
-```
+```javascript
 new Vue({
     ....
     beforeCreate(){
@@ -174,7 +173,7 @@ new Vue({
 >3.使用事件总线:
 
 (1)接收数据:A组件想接收数据,则在A组件中给$bus绑定自定义事件,事件的回调留在A组件自身.
-```
+```javascript
 methods:{
     demo(datas){....}
 }
@@ -197,7 +196,7 @@ mounted(){
 (2)引入:`import pubsub from 'pubsub-js'`
 
 (3)接收数据:A组件需要接收数据,则在A组件中订阅消息,订阅的回调留在A组件自身.
-```
+```javascript
 methods:{
     //回调函数接收两个参数,第一个是订阅名xxx,第二个是发布的消息data
     //或者将回调函数写在订阅消息的方法中,但必须为箭头函数
@@ -212,3 +211,70 @@ mounted(){
 > 4.提供数据:`pubsub.publish('xxx',datas)`
 
 >5.最好在beforeDestroy钩子中,用`pubsub.unsubscribe(pid)`去取消订阅.
+
+## Vue封装的过渡与动画
+>1.作用：在插入。更新或移除DOM元素时，在合适的时候给元素添加样式类名。
+
+>2.图示：
+![alt text](image.png)
+
+>3.写法：
+ >> 1.准备好样式：
+   >>* 元素进入的样式：
+    >>>> 1.v-enter:进入的起点
+        2.v-enter-active:进入的过程中
+        3.v-enter-to：进入的终点
+   >>* 元素离开的样式：
+   >>>>1.v-leave:离开的起点
+       2.v-leave-active:离开过程中
+       3.v-leave-to：离开的终点
+ >> 2.使用`<transition>`包裹要过渡的元素，并配置name属性：
+ ```javascript
+ <transition name="hello">
+    <h1 v-show="isShow">你好啊！<h1/>
+</transition>
+```
+>>3.备注：若有多个元素需要过渡，则需要使用：`<transition-group>`，且每个元素都要指定key值。
+
+## vue脚手架配置代理
+>1.方法一
+
+在vue.config.js中添加如下配置：
+```javascript
+devServer:{
+    proxy:'http://localhost:8888'
+}
+```
+说明：
+1.优点：配置简单，请求资源时直接发给前端（8080）即可。
+2.缺点：不能配置多个代理，不能灵活的控制请求是否走代理。
+3.工作方式：若按照上述方式配置代理，当请求了前端不存在的资源时，那么该请求会转发给服务器（优先匹配前端资源）
+>2.方法二
+
+编写vue.config.js配置具体代理规则：
+```javascript
+modules.exports={
+    devServer:{
+        proxy:{
+            '/api1':{  //匹配所有以'/api1'开头的请求路径
+                target:'http://localhost:5000',  //代理目标的基础路径
+                pathRewrite:{'^/api1':''},  //将前端编写的前缀'/api1'去除
+                ws:true,
+                changeOrigin:true,
+            },
+            '/api2':{
+                target:'http://localhost:5001',
+                pathRewrite:{'^/api2':''},
+                ws:true,
+                changeOrigin:true,
+            },
+        }
+    }
+    // changeOrigin为true时，服务器收到的请求头中的host为：localhost：5000
+    // changeOrigin为false时，服务器收到的请求头中的host为：localhost：8080
+    // changeOrigin默认值为true
+}
+```
+说明：
+   1.优点：可以配置多个代理，且可以灵活的控制请求是否走代理
+   2.缺点：配置略微繁琐，请求资源时必须加前缀

@@ -1,30 +1,22 @@
 <template>
-  <div>
-    <School ref="school"/>
-    <Student ref="student"/>
+  <div id="container">
+    
+    <Search/>
+    <List/>
   </div>
+
 </template>
 
 <script>
-import School from './components/School'
-import Student from './components/Student'
-export default {
-  name:'App',
-  components:{School,Student},
-  data(){
-    return{
-      studentName:'',
-    }
-  },
-  methods:{
-    
-  },
-  mounted(){
-    
+  import List from './components/List'
+  import Search from './components/Search'
+  export default {
+    name:'App',
+    components:{List,Search},
+ 
   }
-}
 </script>
 
 <style>
-
+  
 </style>

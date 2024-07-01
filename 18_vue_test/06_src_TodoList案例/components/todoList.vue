@@ -2,15 +2,21 @@
   <div id="list">
     <div class="unfinished" v-show="todoList.length">未完成{{unfinished}}</div>
     <ul>
-      <todoItem v-for="todoObj in todoList" 
-      :key="todoObj.id" 
-      :todo="todoObj" 
-      />
+      <!-- 引入第三方库的动画 -->
+      <transition-group appear
+      name="animate__animated animate__bounce"
+      enter-active-class="animate__zoomIn"
+      leave-active-class="animate__zoomOut">
+        <todoItem v-for="todoObj in todoList" 
+        :key="todoObj.id" 
+        :todo="todoObj" />
+      </transition-group>
     </ul>
   </div>
 </template>
 
 <script>
+import 'animate.css'
 import todoItem from './todoItem'
 export default {
   name:'todoList',

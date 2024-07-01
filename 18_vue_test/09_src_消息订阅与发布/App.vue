@@ -16,12 +16,6 @@ export default {
       studentName:'',
     }
   },
-  methods:{
-    
-  },
-  mounted(){
-    
-  }
 }
 </script>
 
