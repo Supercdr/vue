@@ -3,6 +3,7 @@
     "animate.css": "^4.1.1",
     "axios": "^1.7.2",
     "nanoid": "^5.0.7",
-    "pubsub-js": "^1.9.4"
+    "pubsub-js": "^1.9.4",
+    "vue-resource": "^1.5.3"
   }
 }
