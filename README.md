@@ -370,6 +370,7 @@ modules.exports={
 ```
 
 ## Vuex
+
 ### 1.概念
  在Vue中实现集中式状态（数据）管理的一个Vue插件，对Vue应用中多个组件的共享状态进行集中式的管理（读/写），也是一种组件间通信的方式，且适用于任意组件间进行通信。
 
@@ -473,7 +474,7 @@ export default new Vuex.Store({
 
 ### 6.四个map方法的使用
 
-1.mapState方法：用于帮助我们映射state中的数据为计算属性
+1.**mapState**方法：用于帮助我们映射`state`中的数据为计算属性
 ```javascript
 computed:{
     //借助mapState生成计算属性：sum、school、subject（对象写法）
@@ -481,6 +482,192 @@ computed:{
 
     //借助mapState生成计算属性：sum、school、subject（数组写法）
     ...mapState(['sum','school','subject']),
-
 }
+```
+2.**mapGetters**方法：用于帮助我们映射`getters`中的数据为计算属性
+```javascript
+computed:{
+    // 借助mapGetters生成计算属性，bigSum（对象写法）
+    ...mapGetters({bigSum:'bigSum'}),
+
+    // 借助mapGetters生成计算属性，bigSum（数组写法）
+    ...mapGetters(['bigSum'])
+}
+```
+
+3.**mapActions**方法：用于帮助我们生成与`actions`对话的方法，即：包含`$store.dispatch(xxx)`的函数
+```javascript
+methods:{
+    // 靠mapActions生成：incrementOdd，incrementWait（对象形式）
+    ...mapActions({incrementOdd:'jiaOdd',incrementWait:'jiaWait'})
+    // 靠mapActions生成：incrementOdd，incrementWait（数组形式）
+    ...mapActions(['jiaOdd','jiaWait'])
+}
+```
+4.**mapMutations**方法：用于帮助我们生成与`mutations`对话的方法，即：包含`$store.commit(xxx)`的函数
+```javascript
+methods:{
+    // 靠mapMutations生成：increment，decrement（对象形式）
+    ...mapMutations({increment:'JIA',decrement:'JIAN'})
+    // 靠mapMutations生成：JIA,JIAN（对象形式）
+    ...mapMutations(['JIA','JIAN'])
+}
+```
+备注：mapActions与mapMutations使用时，若需要传递参数：在模板中绑定事件时传递好参数，否则参数默认是事件对象
+
+### 7.模块化+命名空间
+1.目的：让代码更好维护，让多种数据分类更加准确
+2.修改`store.js`
+```javascript
+const countAbout={
+    namespaced:true, //开启命名空间
+    state:{x:1},
+    mutations:{....},
+    actions:{....},
+    getters:{
+        bigSum(state){
+            return state.sum*10
+        }
+    }
+}
+
+const personAbout={
+    namespaced:true,
+    state:{...},
+    mutations:{...},
+    actions:{...},
+}
+
+const store=new Vuex.Store({
+    modules:{
+        countAbout,
+        personAbout
+    }
+})
+```
+3.开启命名空间后，组件中读取`state`数据：
+```javascript
+// 方式一：自己直接读取
+this.$store.state.personAbout.list
+// 方式二，借助mapState读取
+...mapState('countAbout',['sum','school','subject']),
+```
+4.开启命名空间后，组件中读取`getters`数据
+```javascript
+// 方式一：自己直接读取
+this.$store.getters['personAbout/firstPersonName']
+// 方式二：借助mapGetters读取
+...mapGetters('countAbout',['bigSum'])
+```
+5.开启命名空间后，组件中调用`dispatch`
+```javascript
+// 方式一：自己直接dispatch
+this.$store.dispatch('personAbout/addPersonWang',person)
+// 方式二：借助mapActions
+...mapActions('countAbout',{incrementOdd:'jiaOdd',incrementWait:'jiaWait'})
+```
+6.开启命名空间后，组件中调用`commit`
+```javascript
+// 方式一：自己直接commit
+this.$store.commit('personAbout/ADDPERSON',person)
+// 方式二：借助mapMutations
+...mapMutations('personAbout',{increment:'JIA',decrement:'JIAN'})
+```
+
+## 路由
+
+1.理解：一个路由（route）就是一组映射关系（key-value），多个路由需要路由器（router）进行管理。
+
+2.前端路由：key是路径，value是组件
+### 1.基本使用
+1.安装`vue-router`，命令: `npm i vue-router`
+
+2.应用插件：`Vue.use(VueRouter)`
+
+3.编写router配置项：
+```javascript
+// 引入VueRouter
+import VueRouter from 'vue-router'
+// 引入路由组件
+import About from '../components/About'
+import Home from '../components/Home'
+// 创建router实例对象，去管理一组一组的路由规则
+export default new VueRouter({
+    routes:[
+        {
+            path:'/about',
+            components:About
+        },
+        {
+            path:'/home',
+            components:Home
+        }
+    ]
+})
+```
+4.实现切换（active-class可配置当前选项的样式）
+```javascript
+<router-link active-class="active" to="/about">About</router-link>
+```
+5.指定展示位置
+```javascript
+<router-view></router-view>
+```
+### 2.几个注意点
+1.路由组件通常存放在`pages`文件夹，一般组件通常存放在`components`文件夹
+2.通过切换，“隐藏“了的路由组件，默认是被销毁掉的，需要的时候再去挂载
+3.每个组件都有自己的`$route`属性，里面存储着自己的路由信息
+4.整个应用只有一个`router`，可以通过组件的`$router`属性获取到
+
+### 3.嵌套路由（多级路由）
+1.配置路由规则，使用children配置项：
+```javascript
+routes:[
+    {
+        path:'/about',
+        component:About,
+    },
+    {
+        path:'/home',
+        component:Home,
+        children:[  //通过children配置子级路由
+            {
+                path:'news',  //子路由中路径前不用写”/“
+                component:News
+            },
+            {
+                path:'message',
+                component:Message
+            }
+        ]
+    }
+]
+```
+2.跳转（要写完整路径）：
+```javascript
+<router-link to="/home/news"></router-link>
+```
+
+### 4.路由的query参数
+
+1.传递参数
+```javascript
+// 跳转并携带query参数，to的字符串写法
+<router-link :to="`/home/message/detail?id=${m.id}&title=${m.title}`">{{m.title}}</router-link>
+
+// 跳转并携带query参数，to的对象写法
+<router-link :to="{
+            path:'/home/message/detail',
+            query:{
+              id:m.id,
+              title:m.title
+            }
+         }">
+        {{ m.title }}
+      </router-link>
+```
+2.接收参数：
+```javascript
+$route.query.id
+$route.query.title
 ```

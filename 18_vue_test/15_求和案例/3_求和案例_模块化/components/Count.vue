@@ -2,6 +2,7 @@
   <div id="count">
     <h1>当前的数：{{ sum }}</h1>
     <h3>放大十倍后的数:{{ bigSum }}</h3>
+    <h3>person组件的人数为:{{ personList.length }}</h3>
     <h3>姓名：{{ name }}</h3>
     <h3>年龄：{{ age }}</h3>
     <select v-model.number="number">
@@ -27,24 +28,17 @@
       }
     },
     computed:{
-      // 使用Vue的mapState,mapGetters方法从Store中获取数据
-      ...mapState(['sum','name','age']),
-      ...mapGetters(['bigSum']),
+      // 从store中的countAbout模块中读取sum,name,age的数据
+      ...mapState('countAbout',['sum','name','age']),
+      ...mapState('personAbout',['personList']),
+      ...mapGetters('countAbout',['bigSum']),
     },
     methods:{
-      // increment(){
-      //   this.$store.dispatch('jia',this.number)
-      // },
-      // decrement(){
-      //   this.$store.dispatch('jian',this.number)
-      // },
-      // incrementOdd(){
-      //   this.$store.dispatch('jiaOdd',this.number)
-      // },
-      // incrementWait(){
-      //   this.$store.dispatch('jiaWait',this.number)
-      // },
-      ...mapActions({increment:'jia',decrement:'jian',incrementOdd:'jiaOdd',incrementWait:'jiaWait'})
+      // 使用mapMutations生成$store.commit方法
+      ...mapMutations('countAbout',{increment:'JIA',decrement:'JIAN'}),
+      // 使用mapActions生成$store.dispatch方法
+      ...mapActions('countAbout',{incrementOdd:'jiaOdd',incrementWait:'jiaWait'}),
+
     },
     mounted(){
       console.log(this.$store)

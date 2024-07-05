@@ -1,6 +1,6 @@
 <template>
   <div id="container">
-   <Banner/>
+    <h1>Vue Router Demo</h1>
     <hr>
     <div class="guide">
       <router-link class="routerLink" to="/about" active-class="activeLink">About</router-link>
@@ -11,12 +11,11 @@
 </template>
 
 <script>
-  import Home from './pages/Home'
-  import About from './pages/About'
-  import Banner from './components/Banner'
+  import Home from './components/Home'
+  import About from './components/About'
   export default {
     name:'App',
-    components:{Home,About,Banner},
+    components:{Home,About},
     mounted(){
 
     }
