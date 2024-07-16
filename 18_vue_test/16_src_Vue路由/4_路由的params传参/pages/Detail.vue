@@ -1,9 +1,9 @@
 <template>
   <div>
     <ul>
-      <!-- 使用props接收路由参数 -->
-      <li>消息编号：{{ id }}</li>
-      <li>消息详情：{{ title }}</li>
+      <!-- 使用params接收参数 -->
+      <li>消息编号：{{ $route.params.id}}</li>
+      <li>消息详情：{{ $route.params.title}}</li>
     </ul>
   </div>
 </template>
@@ -13,8 +13,7 @@ export default {
   name:'Detail',
   mounted(){
     console.log(this.$route)
-  },
-  props:["id","title"]
+  }
 }
 </script>
 

@@ -28,14 +28,6 @@ export default new VueRouter({
               name:'xiangxi',
               // 使用占位符接收相应的params参数
               path:'detail/:id/:title',
-              
-              // props的第三种写法，值为函数，默认接收$route参数
-              props(r){
-                return{
-                  id:r.params.id,
-                  title:r.params.title
-                }
-              },
               component:Detail
             }
           ]

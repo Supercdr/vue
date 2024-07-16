@@ -86,7 +86,7 @@
 
 ## 总结TodoList案例
 >1.组件化编码流程：
-  （1）。拆分静态组件：组件按照功能点拆分，命名不要与HTML元素冲突。
+  （1）拆分静态组件：组件按照功能点拆分，命名不要与HTML元素冲突。
   （2）实现动态组件：考虑好数据的存放位置，数据是一个组件在用，还是一些组件在用。
       a.一个组件在用：放在组件自身即可
       b.一些组件在用：放在他们共同的父组件上（状态提升）
@@ -657,17 +657,137 @@ routes:[
 
 // 跳转并携带query参数，to的对象写法
 <router-link :to="{
-            path:'/home/message/detail',
-            query:{
-              id:m.id,
-              title:m.title
-            }
-         }">
-        {{ m.title }}
-      </router-link>
+                path:'/home/message/detail',
+                query:{
+                id:m.id,
+                title:m.title
+                }
+            }">
+  {{ m.title }}
+</router-link>
 ```
 2.接收参数：
 ```javascript
 $route.query.id
 $route.query.title
 ```
+
+### 5.命名路由
+
+1.作用：可以简化路由的跳转
+
+2.如何使用：
+>   1.给路由命名：
+
+```javascript
+{
+    path:'/demo',
+    component:Demo,
+    children:[
+        {
+            path:'test',
+            component:Test,
+            children:[
+                {
+                    name:'hello',  //给路由命名
+                    path:'welcome',
+                    component:Hello,
+                }
+            ]
+        }
+    ]
+}
+```
+2.简化跳转
+```javascript
+// 简化前，需要写完整的路径
+<router-link to="/demo/test/welcome">跳转</router-link>
+// 简化后，直接通过名字跳转
+<router-link :to="{name:'hello'}">跳转</router-link>
+// 简化写法配合传递参数
+<router-link :to="{
+                name:'hello',
+                query:{
+                    id:666,
+                    title:'你好'
+                }
+            }"
+跳转</router-link>
+```
+
+### 6.路由的params参数
+
+1.配置路由，声明接收params参数
+```javascript
+{
+    path:'/home',
+    component:Home,
+    children:[
+        {
+            path:'news',
+            component:News
+        },
+        {
+            component:Message,
+            children:[
+                {
+                    name:'xiangqing',
+                    path:'detail/:id/:title',  //使用占位符声明接受params参数
+                    component:Detail
+                }
+            ]
+        }
+    ]
+}
+```
+2.传递参数
+```javascript
+// 跳转并携带params参数，to的字符串写法
+<router-link :to="/home/message/detail/666/你好">跳转</router-link>
+// 跳转并携带params参数，to的对象写法（路由必须使用name命名）
+<router-link :to="{
+    name:'xiangqing',
+    params:{
+        id:666,
+        title:'你好'
+    }
+}"
+>跳转</router-link>
+```
+特别注意：路由携带params参数时，若使用to的对象写法，则不能使用path配置项，必须使用name配置！
+3.接收参数：
+```javascript
+$route.params.id
+$route.params.title
+```
+
+### 7.路由的props配置
+
+作用：让路由组件更方便的收到参数
+
+```javascript
+{
+    name:'xiangqing',
+    path:'detail/:id',
+    component:Detail,
+    // 第二种写法：props值为对象，该对象中所有的key-value的组合最终都会通过props传给目标组件
+    // props:{id:'001',title:'你好'}
+
+    // 第二种写法：props值为布尔值，布尔值为true，则把路由收到的所有params参数通过props传给目标组件
+    // props:true
+
+    // 第三种写法：props值为函数，默认接收$route参数，该函数返回的对象中每一组key-value都会通过props传给目标组件
+    props(r){
+        return{
+            id:r.params.id,
+            title:r.params.title
+        }
+    }
+}
+
+```
+
+### 8.`<router-link>`的replace属性
+1.作用：控制路由跳转时操作浏览器历史纪录的模式
+2.浏览器的历史记录有两种写入方式：分别为`push`和`replace`，`push`是追加历史记录，`replace`是替换当前记录，浏览器默认为`push`
+3.如何开启replace模式：`<router-link replace ...>News</router-link>`
