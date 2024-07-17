@@ -35,6 +35,7 @@ export default {
     clearInterval(this.timer)
     console.log('News路由组件已失活')
   },
+
   beforeDestroy(){
     console.log('News组件即将被销毁')
   }

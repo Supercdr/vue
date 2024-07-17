@@ -5,8 +5,6 @@ import News from '../pages/News'
 import Message from '../pages/Message'
 import Detail from '../pages/Detail'
 const router = new VueRouter({
-  // 设置路由模式,默认为hash(路径中#后面的内容是hash值,不会包含在http请求中上传给服务器)
-  mode:'history',
   routes:[
     {
       path:'/about',
@@ -24,19 +22,6 @@ const router = new VueRouter({
           path:'news',
           component:News,
           meta:{isAuth:true,title:'news'},
-          // 独享路由守卫 对路由进行单独限制 没有后置守卫,但可与全局的后置守卫搭配使用
-          // beforeEnter(to,from,next){
-          //   console.log('@',to,from)
-          //   if(to.meta.isAuth){
-          //     if(localStorage.getItem('name')==='kaylee1'){
-          //       next()
-          //     }else{
-          //       alert('姓名错误')
-          //     }
-          //   }else{
-          //     next()
-          //   }
-          // },
         },
         {
           path:'message',
@@ -63,19 +48,18 @@ const router = new VueRouter({
     }
   ]
 })
-// 全局路由守卫 前置路由守卫beforeEach和后置路由守卫afterEach
-// router.beforeEach((to,from,next)=>{
-//   console.log('@',to,from)
-//   if(to.meta.isAuth){
-//     if(localStorage.getItem('name')==='kaylee1'){
-//       next()
-//     }else{
-//       alert('姓名错误')
-//     }
-//   }else{
-//     next()
-//   }
-// })
+router.beforeEach((to,from,next)=>{
+  console.log('@',to,from)
+  if(to.meta.isAuth){
+    if(localStorage.getItem('name')==='kaylee1'){
+      next()
+    }else{
+      alert('姓名错误')
+    }
+  }else{
+    next()
+  }
+})
 router.afterEach((to,from)=>{
   document.title=to.meta.title || 'Vue Router'
 })

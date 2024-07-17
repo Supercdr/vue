@@ -7,11 +7,7 @@
       <!-- 浏览器历史记录写入方法默认为push，即不会替换之前的历史记录 -->
       <router-link class="homeLink" to="/home/message" active-class="activeLink">message</router-link>
     </div>
-    <!-- 路由组件在跳转时会将前一个路由销毁，点击时再次生成新的真实DOM -->
-    <!-- 缓存路由组件 将需要缓存的组件放在keep-alive标签中，include属性是组件名-->
-    <keep-alive include="News">
-      <router-view></router-view>
-    </keep-alive>
+    <router-view></router-view>
   </div>
   
 </template>
